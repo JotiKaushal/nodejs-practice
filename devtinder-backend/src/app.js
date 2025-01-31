@@ -2,7 +2,6 @@ const express = require("express")
 const connectDB = require('./config/database');
 const app = new express();
 const User = require('./Models/user');
-
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
@@ -16,7 +15,7 @@ app.post('/signup', async (req, res) => {
     try {
         const user = new User(req.body);
         const exitingUser = await User.findOne({ emailId: user.emailId });
-        if (exitingUser.length > 0) {
+        if (exitingUser && exitingUser.length > 0) {
             res.status(401).send("email already exist");
         } else {
             await user.save();
@@ -72,14 +71,23 @@ app.delete('/deleteUser', async (req, res) => {
     }
 })
 
-app.patch('/updateUser', async (req, res) => {
+app.patch('/updateUser/:userId', async (req, res) => {
     const data = req.body;
-    const userId = data.userId;
+    const userId = req.params.userId;
+  
     try {
-        await User.findByIdAndUpdate({ _id: userId }, data);
+        const ALLOWED_UPDATES = ["photoUrl","about","gender", "age", "skills"];
+        const isUpdateAllowed = Object.keys(data).every(k => ALLOWED_UPDATES.includes(k));
+        if(!isUpdateAllowed){
+            throw new Error("update not allowed");
+        }
+        if(data.skills?.length > 10){
+            throw new Error("Only 10 skills are allowed");
+        }
+        await User.findByIdAndUpdate({ _id: userId }, data, {runValidators:true});
         res.send('user updated');
     }
-    catch (err) { res.status(401).send("error occured " + err.message); }
+    catch (err) { res.status(401).send("error occured: " + err.message); }
 })
 
 connectDB().then(() => {
