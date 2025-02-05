@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator');
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -16,8 +18,8 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        validate(value){
-            if(!validator.isEmail(value)){
+        validate(value) {
+            if (!validator.isEmail(value)) {
                 throw new Error("email address is not valid");
             }
         }
@@ -25,8 +27,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        validate(value){
-            if(!validator.isStrongPassword(value)){
+        validate(value) {
+            if (!validator.isStrongPassword(value)) {
                 throw new Error("Password is not strong");
             }
         }
@@ -45,8 +47,8 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
-        validate(value){
-            if(!validator.isURL(value)){
+        validate(value) {
+            if (!validator.isURL(value)) {
                 throw new Error("photourl is not valid");
             }
         }
@@ -65,5 +67,16 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+userSchema.methods.getJWT = async function () {
+    const user = this;
+    const token = await jwt.sign({ _id: user._id }, "dev@tinder#76", { expiresIn: "1d" });
+    return token;
+}
+
+userSchema.methods.validatePassword = async function (password) {
+    const user = this;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    return isPasswordValid;
+}
 const User = mongoose.model("User", userSchema)
 module.exports = User;
