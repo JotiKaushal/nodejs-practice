@@ -1,69 +1,20 @@
 const express = require("express")
 const connectDB = require('./config/database');
 const app = new express();
-const User = require('./Models/user');
-const { validateUserData, validateLogin } = require('./utils/validation');
-const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const {userAuth} = require("./middlewares/auth");
+
 app.use(express.json());
 app.use(cookieParser());
 
-app.post('/login', async (req, res) => {
 
-    try {
-        const { emailId, password } = req.body;
-        await validateLogin(emailId, password);
-        const user = await User.findOne({ emailId: emailId });
-        //reate jwttoken
-        const token = await user.getJWT();
-        //add token to cookie & send response back to user
-        res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true })
-        res.send("login successfully");
-    } catch (err) {
-        res.status(401).send("error occured " + err.message);
-    }
-})
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
-app.post('/signup', async (req, res) => {
-    // const user = new User({
-    //     firstName: 'Atharv',
-    //     lastName: 'Rana',
-    //     emailId: 'atharv@gmail.com',
-    //     password: '12345',
-    //     gender: 'Male'
-    // });
-    try {
-
-        //validate data
-        validateUserData(req);
-        const { firstName, lastName, emailId, password, gender } = req.body;
-        //encrypt password
-        const passwordHash = await bcrypt.hash(password, 10);
-        //create user
-        const user = new User({ firstName, lastName, emailId, password: passwordHash, gender });
-        const exitingUser = await User.findOne({ emailId: user.emailId });
-        if (exitingUser && exitingUser.length > 0) {
-            res.status(401).send("email already exist");
-        } else {
-            await user.save();
-            res.send("user added successfully");
-        }
-
-    } catch (err) {
-        res.status(401).send("error occured " + err.message);
-    }
-})
-
-
-app.get('/profile',userAuth, async (req, res) => {
-    res.send(req.user.firstName+" profile fetched successfully");
-})
-
-app.post('/sendConnectionRequest', userAuth, async (req, res) => {
-    res.send(req.user.firstName + "sent connection request");
-})
 //find usr by email
 
 // app.get('/user',userAuth, async (req, res) => {
