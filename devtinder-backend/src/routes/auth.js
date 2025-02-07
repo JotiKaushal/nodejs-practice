@@ -20,6 +20,15 @@ router.post('/login', async (req, res) => {
     }
 })
 
+
+router.post('/logout',  (req, res) => {
+    try {
+        res.cookie('token', null, { expires: new Date(Date.now()) });
+        res.send("logout successfully");
+     }
+    catch (error) { res.status(401).send("error occured " + err.message); }
+})
+
 router.post('/signup', async (req, res) => {
     // const user = new User({
     //     firstName: 'Atharv',

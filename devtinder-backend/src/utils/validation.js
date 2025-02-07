@@ -21,6 +21,16 @@ const validateUserData = (req) => {
     }
 }
 
+const validateProfileData = (req) => {
+    const allowedEditFIelds = [
+        "lastName", "firstName", "gender", "photoUrl", "about", "skills"
+    ];
+
+   const isEditAllowed =  Object.keys(req.body).every(field=> allowedEditFIelds.includes(field));
+           
+   return isEditAllowed;
+}
+
 
 const validateLogin = async (emailId, password) => {
     if (!validator.isEmail(emailId)) {
@@ -38,4 +48,4 @@ const validateLogin = async (emailId, password) => {
 }
 
 
-module.exports = { validateUserData, validateLogin };
+module.exports = { validateUserData, validateLogin, validateProfileData };
