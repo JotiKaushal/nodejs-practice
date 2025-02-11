@@ -10,10 +10,11 @@ profileRouter
 
 
 connectionRequestRouter
--POST /request/send/ignore/:userid
--POST /request/send/interested/:userid
--POST /request/review/acccepted/:requestId
--POST /request/review/rejected/:requestId
+-POST /request/send/:status/:userid
+-POST /request/review/:status/:requestId
+
+
+
 
 --GET: /user/connections
 -GET: /user/request/received
