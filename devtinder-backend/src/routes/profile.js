@@ -3,7 +3,7 @@ const router = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const { validateProfileData } = require('../utils/validation');
 router.get('/profile/view', userAuth, async (req, res) => {
-    res.send(req.user);
+    res.json({"data":req.user});
 })
 
 router.patch("/profile/edit", userAuth, async (req, res) => {
@@ -23,6 +23,6 @@ router.patch("/profile/edit", userAuth, async (req, res) => {
             data: loggedInUser
         }).send();
     }
-    catch (err) { res.status(401).send("error occured " + err.message); }
+    catch (err) { res.status(401).json({"message":"error occured " + err.message}); }
 })
 module.exports = router;

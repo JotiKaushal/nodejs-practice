@@ -14,9 +14,9 @@ router.post('/login', async (req, res) => {
         const token = await user.getJWT();
         //add token to cookie & send response back to user
         res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true })
-        res.send("login successfully");
+        res.json({"message": "login successfully"});
     } catch (err) {
-        res.status(401).send("error occured " + err.message);
+        res.status(401).json({"message":"error occured " + err.message});
     }
 })
 
@@ -24,9 +24,9 @@ router.post('/login', async (req, res) => {
 router.post('/logout',  (req, res) => {
     try {
         res.cookie('token', null, { expires: new Date(Date.now()) });
-        res.send("logout successfully");
+        res.json({"message":"logout successfully"});
      }
-    catch (error) { res.status(401).send("error occured " + err.message); }
+    catch (error) { res.status(401).json({"message":"error occured " + err.message}); }
 })
 
 router.post('/signup', async (req, res) => {
@@ -48,14 +48,14 @@ router.post('/signup', async (req, res) => {
         const user = new User({ firstName, lastName, emailId, password: passwordHash, gender });
         const exitingUser = await User.findOne({ emailId: user.emailId });
         if (exitingUser && exitingUser.length > 0) {
-            res.status(401).send("email already exist");
+            res.status(401).json({"message":"email already exist"});
         } else {
             await user.save();
-            res.send("user added successfully");
+            res.json({"message":"user added successfully"});
         }
 
     } catch (err) {
-        res.status(401).send("error occured " + err.message);
+        res.status(401).json({"message":"error occured " + err.message});
     }
 })
 

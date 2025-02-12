@@ -10,12 +10,12 @@ router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
         const status = req.params.status;
         const allowedStatus = ["interested", "ignored"];
         if (!allowedStatus.includes(status)) {
-           return res.json({ "message": "invalid status type", "status": status }).send();
+           return res.json({ "message": "invalid status type", "status": status });
         }
 
         const toUser = await User.findById(toUserId);
         if (!toUser) {
-           return res.json({ "message": "user not found" }).send();
+           return res.json({ "message": "user not found" });
         }
 
         //check for existing connection requests
@@ -26,7 +26,7 @@ router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
         });
 
         if (existingConnectionRequest) {
-          return  res.json({ "message": "request already exist" }).send();
+          return  res.json({ "message": "request already exist" });
         }
         const connectionRequest = new ConnectionRequests({
 
@@ -35,9 +35,9 @@ router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
             status
         })
         const data = await connectionRequest.save();
-        res.json({ "message": `${req.user.firstName} ${status} in ${toUser.firstName}`, "data": data }).send();
+        res.json({ "message": `${req.user.firstName} ${status} in ${toUser.firstName}`, "data": data });
     }
-    catch (err) { res.status(401).send("error occured " + err.message); }
+    catch (err) { res.status(401).json({"message":"error occured " + err.message}); }
 })
 
 router.post('/request/review/:status/:requestId', userAuth, async (req, res) => {
@@ -66,7 +66,7 @@ router.post('/request/review/:status/:requestId', userAuth, async (req, res) => 
 
         res.json({message: `connection request ${status}`, data})
     }
-    catch (err) { res.status(401).send("error occured " + err.message); }
+    catch (err) { res.status(401).json({"message":"error occured " + err.message}); }
 })
 
 
