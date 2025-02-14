@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
         const token = await user.getJWT();
         //add token to cookie & send response back to user
         res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true })
-        res.json({"message": "login successfully"});
+        res.json({"message": "login successfully", user: user});
     } catch (err) {
         res.status(401).json({"message":"error occured " + err.message});
     }
