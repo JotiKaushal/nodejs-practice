@@ -21,6 +21,12 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 - login and check data instore
 -Navbar should update after login
 -refactor code to add consdtant file + create component folder
+-should not be able to access other routesd if not login
+-redirect user to login page
+-logout
+-profile page
+
+
 Body
 -Navbar
 route / =feed

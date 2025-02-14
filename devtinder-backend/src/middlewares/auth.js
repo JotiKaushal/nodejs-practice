@@ -6,7 +6,7 @@ try{
     //read token req cookie validate it and find user
 const {token} = req.cookies;
 if(!token){
-    throw new Error("token is invalid");
+   return res.status(401).send("Please login!");
 }
 const decodedObj = await jwt.verify(token, "dev@tinder#76");
 const {_id} = decodedObj;
