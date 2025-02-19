@@ -31,7 +31,7 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 -create userCard component
 -dedit profile\-show toast mesage on suces
 - se al conection page
-
+-new page to see all connection requests
 Body
 -Navbar
 route / =feed
