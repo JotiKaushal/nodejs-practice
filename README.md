@@ -32,6 +32,13 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 -dedit profile\-show toast mesage on suces
 - se al conection page
 -new page to see all connection requests
+-send/ignore cnnectionr equest
+-sign up new user
+-e2e testing
+
+
+
+
 Body
 -Navbar
 route / =feed

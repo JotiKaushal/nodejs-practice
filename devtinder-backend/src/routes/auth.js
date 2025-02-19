@@ -50,8 +50,12 @@ router.post('/signup', async (req, res) => {
         if (exitingUser && exitingUser.length > 0) {
             res.status(401).json({"message":"email already exist"});
         } else {
-            await user.save();
-            res.json({"message":"user added successfully"});
+           const savedUser = await user.save();
+            //reate jwttoken
+         const token = await savedUser.getJWT();
+        //add token to cookie & send response back to user
+        res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true })
+            res.json({"message":"user added successfully", data: savedUser});
         }
 
     } catch (err) {
