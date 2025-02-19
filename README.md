@@ -25,7 +25,12 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 -redirect user to login page
 -logout
 -profile page
-
+-create logout feature
+-get the feed
+-add the feed in store
+-create userCard component
+-dedit profile\-show toast mesage on suces
+- se al conection page
 
 Body
 -Navbar

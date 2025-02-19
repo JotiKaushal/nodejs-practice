@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
         res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true })
         res.json({"message": "login successfully", user: user});
     } catch (err) {
-        res.status(401).json({"message":"error occured " + err.message});
+        res.status(401).json({"message":"ERROR: " + err.message});
     }
 })
 
@@ -26,7 +26,7 @@ router.post('/logout',  (req, res) => {
         res.cookie('token', null, { expires: new Date(Date.now()) });
         res.json({"message":"logout successfully"});
      }
-    catch (error) { res.status(401).json({"message":"error occured " + err.message}); }
+    catch (error) { res.status(401).json({"message":"ERROR: " + err.message}); }
 })
 
 router.post('/signup', async (req, res) => {
@@ -55,7 +55,7 @@ router.post('/signup', async (req, res) => {
         }
 
     } catch (err) {
-        res.status(401).json({"message":"error occured " + err.message});
+        res.status(401).json({"message":"ERROR: " + err.message});
     }
 })
 
