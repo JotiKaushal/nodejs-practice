@@ -38,6 +38,29 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 
 
 
+#deployment
+-signup on AWS
+-lauch instanch (ec2)
+-create key value pair
+- chmod 400 <secret>.pem (open git bash go to download folder where perm file is then run this command)
+-connect >> using ssh (run ssh cmd  ssh -i "devTinder-secret.pem" ubuntu@ec2-13-232-217-252.ap-south-1.compute.amazonaws.com)
+-install node on aws instance (https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html)
+-git clone(clone your git repository to aws instance)
+
+
+-deploy front end project 
+-go to project folder
+-do npm i
+-run >> npm run build
+-sudo apt update
+-sudo apt install nginx
+-sudo systemctl start nginx
+-sudo systemctl enable nginx
+-copy code from dist (build filess) to /var/www/html/
+-sudo scp -r dist/* /var/www/html/
+-enable port of your aws instance
+-go to aws instance in UI >>  security >> security group >> inbound rule >> add port 80
+-then check open ip in browser (http://13.232.217.252/). Remeber to remove s from https if it is there
 
 Body
 -Navbar
