@@ -64,8 +64,8 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 
 
 -backend
--llowed ec2 instance public ip on mongo dp
-installed pm2 on serer(to keep app running on esrver)  npm install pm2 -g
+-allow ec2 instance public ip on mongo db
+installed pm2 on server(to keep app running on server)  npm install pm2 -g (in git bash server terminal)
 -pm2 start npm -- start  (to start server in background)
 --pm2 logs (to see app logs)
 -- pm2 flush (to remove logs)
@@ -73,13 +73,13 @@ installed pm2 on serer(to keep app running on esrver)  npm install pm2 -g
 --pm2 delete npm (to delete process)
 
 to rename process
-pm2 start npm --name "devtinder-backend" -- start
+pm2 start npm --name "devtinder-backend" -- start (in git bash server terminal)
 
 
 front end: http://3.7.66.180/
 back end: http://3.7.66.180:3000/feed map it to http://3.7.66.180/api/feed
 
-edit nginx config for this on sewrver: command with path >> sudo nano /etc/nginx/sites-available/defalut
+edit nginx config for this on sewrver: command with path >> sudo nano /etc/nginx/sites-available/defalut (in git bash server terminal)
 
 nginx config:
 
@@ -93,12 +93,12 @@ location /api/ {
     }
 
 
--restart nginx: cmd >> sudo systemctl restart nginx
-
--update base url in front end application
-
-
-
+-restart nginx: cmd >> sudo systemctl restart nginx (in git bash server terminal)
+-update base url in front end application and commit changes
+- git pull on server (in git bash server terminal)
+un >> npm run build (in git bash server terminal)
+-copy code from dist (build filess) to /var/www/html/
+-sudo scp -r dist/* /var/www/html/ (in git bash server terminal)
 
 
 
