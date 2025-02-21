@@ -62,10 +62,42 @@ install REdux toolkit - https://redux-toolkit.js.org/tutorials/quick-start
 -go to aws instance in UI >>  security >> security group >> inbound rule >> add port 80
 -then check open ip in browser (http://13.232.217.252/). Remeber to remove s from https if it is there
 
-Body
--Navbar
-route / =feed
-route /login => login page
+
+-backend
+-llowed ec2 instance public ip on mongo dp
+installed pm2 on serer(to keep app running on esrver)  npm install pm2 -g
+-pm2 start npm -- start  (to start server in background)
+--pm2 logs (to see app logs)
+-- pm2 flush (to remove logs)
+--pm2 stop npm (name of process running check using pm2 list)
+--pm2 delete npm (to delete process)
+
+to rename process
+pm2 start npm --name "devtinder-backend" -- start
+
+
+front end: http://3.7.66.180/
+back end: http://3.7.66.180:3000/feed map it to http://3.7.66.180/api/feed
+
+edit nginx config for this on sewrver: command with path >> sudo nano /etc/nginx/sites-available/defalut
+
+nginx config:
+
+location /api/ {
+        proxy_pass http://localhost:3000/;  # Pass requests to Node.js
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+
+-restart nginx: cmd >> sudo systemctl restart nginx
+
+-update base url in front end application
+
+
 
 
 
