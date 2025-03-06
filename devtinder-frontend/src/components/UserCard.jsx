@@ -4,7 +4,7 @@ import { base_url } from '../utils/constants'
 import { useDispatch } from 'react-redux'
 import { removeFeed } from '../utils/feedSlice'
 
-const UserCard = ({user}) => {
+const UserCard = ({user, hideButton}) => {
   const {_id,firstName, lastName, age, gender, about, photoUrl} = user;
   const dispatch = useDispatch();
   const sendRequest = async (status, userId) => {
@@ -27,9 +27,9 @@ const UserCard = ({user}) => {
       <h2 className="card-title">{firstName+ " " + lastName}</h2>
      {age && gender && <p>{age + " "+ gender}</p>}
       {about && <p>{about}</p>}
-      <div className="card-actions justify-center my-4">
+     {!hideButton && <div className="card-actions justify-center my-4">
         <button className="btn btn-primary" onClick={()=>{sendRequest("ignored", _id)}}>Ignore</button> <button className="btn btn-secondary" onClick={()=>{sendRequest("interested", _id)}}>Interested</button>
-      </div>
+      </div>}
     </div>
   </div>
   )

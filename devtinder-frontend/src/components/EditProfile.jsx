@@ -83,7 +83,7 @@ const EditProfile = ({ user }) => {
                     </div>
                 </div>
             </div>
-            <UserCard user={user} />
+            <UserCard user={user} hideButton={true} />
         </div>
     )
 }
