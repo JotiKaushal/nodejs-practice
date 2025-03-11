@@ -1,5 +1,5 @@
 const {SendEmailCommand} = require("@aws-sdk/client-ses");
-const {client} = require("./sesclient");
+const {client} = require("./client");
 
 const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
     return new SendEmailCommand({
