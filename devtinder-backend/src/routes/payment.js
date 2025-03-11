@@ -1,28 +1,27 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const paymentRouter = express.Router();
-//const razorpay = require("../utils/razorpay")
+const razorpay = require("../utils/razorpay")
 const Payment = require("../Models/payment");
 const { membershipAmount } = require("../utils/contants");
-//const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
+const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
 const User = require("../Models/user");
 
 paymentRouter.post("/payment/create", userAuth, async (req, res) => {
   try {
     const { membershipType } = req.body;
     const user = req.user;
-    const order = {};
-    // await razorpay.orders.create({
-    //   "amount": membershipAmount[membershipType] * 100, //50000 paisa lowest currency
-    //   "currency": "INR",
-    //   "receipt": "receipt#1",
-    //   "notes": {
-    //     "firstName": user.firstName,
-    //     "lastName": user.lastName,
-    //     "emailId": user.emailId,
-    //     "membershipType": membershipType
-    //   }
-    // });
+    const order = await razorpay.orders.create({
+      "amount": membershipAmount[membershipType] * 100, //50000 paisa lowest currency
+      "currency": "INR",
+      "receipt": "receipt#1",
+      "notes": {
+        "firstName": user.firstName,
+        "lastName": user.lastName,
+        "emailId": user.emailId,
+        "membershipType": membershipType
+      }
+    });
 
     //save it to db
     const payment = new Payment({
@@ -51,7 +50,7 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
 paymentRouter.post("/payment/webhook", async (req, res) => {
   try {
     const webhookSignature = req.headers("X-Razorpay-Signature");
-    const isWebhookValid = true; // validateWebhookSignature(JSON.stringify(req.body), webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
+    const isWebhookValid = validateWebhookSignature(JSON.stringify(req.body), webhookSignature, process.env.RAZORPAY_WEBHOOK_SECRET)
     if (!isWebhookValid) {
       return res.status(500).json({ msg: "webhook signature is not valid" })
     }
