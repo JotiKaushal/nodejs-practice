@@ -3,7 +3,7 @@ const router = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequests = require("../Models/connectionRequest");
 const User = require("../Models/user");
-const sendEmail = require("../utils/sendEmail")
+const sendEmail = require("../utils/sendemail")
 router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
