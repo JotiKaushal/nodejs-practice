@@ -3,7 +3,7 @@ const router = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequests = require("../Models/connectionRequest");
 const User = require("../Models/user");
-const sendemail = require("../utils/sendemail")
+const email = require("../utils/email")
 router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
@@ -36,7 +36,7 @@ router.post('/request/send/:status/:userid', userAuth, async (req, res) => {
             status
         })
         const data = await connectionRequest.save();
-        const emailRes = await sendemail.run("A new frient request on DevloperTinder", `${req.user.firstName} ${status} in ${toUser.firstName}`);
+        const emailRes = await email.run("A new frient request on DevloperTinder", `${req.user.firstName} ${status} in ${toUser.firstName}`);
         console.log(emailRes);
         
         res.json({ "message": `${req.user.firstName} ${status} in ${toUser.firstName}`, "data": data });
