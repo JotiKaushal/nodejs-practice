@@ -68,7 +68,14 @@ const userSchema = new mongoose.Schema({
                 throw new Error("Only 10 skills are allowed");
             }
         }
-    }
+    },
+    isPremium: {
+        type: Boolean,
+        default: false
+    },
+    memebershipType: {
+        type: String,
+    },
 }, { timestamps: true })
 
 userSchema.methods.getJWT = async function () {
