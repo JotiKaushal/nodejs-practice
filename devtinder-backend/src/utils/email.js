@@ -1,5 +1,5 @@
 const {SendEmailCommand} = require("@aws-sdk/client-ses");
-const {sesclient} = require("./sesclient");
+const {client} = require("./sesclient");
 
 const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
     return new SendEmailCommand({
@@ -46,7 +46,7 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
     );
   
     try {
-      return await sesclient.send(sendEmailCommand);
+      return await client.send(sendEmailCommand);
     } catch (caught) {
       if (caught instanceof Error && caught.name === "MessageRejected") {
         /** @type { import('@aws-sdk/client-ses').MessageRejected} */
