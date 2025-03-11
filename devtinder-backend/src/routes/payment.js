@@ -1,7 +1,7 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const paymentRouter = express.Router();
-const razorPayInstance = require("../utils/razorpay")
+const razorpay = require("../utils/razorpay")
 const Payment = require("../Models/payment");
 const { membershipAmount } = require("../utils/contants");
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
@@ -11,7 +11,7 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
   try {
     const { membershipType } = req.body;
     const user = req.user;
-    const order = await razorPayInstance.orders.create({
+    const order = await razorpay.orders.create({
       "amount": membershipAmount[membershipType] * 100, //50000 paisa lowest currency
       "currency": "INR",
       "receipt": "receipt#1",
