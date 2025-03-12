@@ -4,6 +4,8 @@ const connectDB = require('./config/database');
 const app = new express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const http = require("http");
+
 require("./utils/cronjob")
 
 app.use(cors({
@@ -19,12 +21,16 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRoute = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const initialSocket = require("./utils/socket");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRoute);
 app.use("/", paymentRouter);
+
+const server = http.createServer(app);
+initialSocket(server);
 
 //find usr by email
 
@@ -91,7 +97,7 @@ app.use("/", paymentRouter);
 connectDB().then(() => {
     console.log('database connected');
 
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
         console.log('server succeefully created');
     });
 }).catch(err => console.log('coonection error ' + err));
