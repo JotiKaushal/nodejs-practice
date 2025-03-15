@@ -1,7 +1,7 @@
 const cron = require("node-cron");
 const { subDays, startOfDay, endOfDay } = require("date-fns")
 const ConnectionRequests = require("../Models/connectionRequest");
-const email = require("./email");
+//const email = require("./email");
 cron.schedule("59 8 * * *", async () => {
     // send email to all people who got requests the previous day
     try {
@@ -23,8 +23,8 @@ cron.schedule("59 8 * * *", async () => {
         //use bee queue or bullmq npm packages to process emails in queues instead of below code because it can cause blockage as we are using loop
         for (const mail of listOfEmails) {
             try {
-                const res = await email.run("New Friend Request for " + mail, "There are so many friend requests pending, please login to devlopertinder.in to accept or reject");
-                console.log(res);
+               // const res = await email.run("New Friend Request for " + mail, "There are so many friend requests pending, please login to devlopertinder.in to accept or reject");
+               // console.log(res);
             }
             catch (err) {
                 console.log(err);
